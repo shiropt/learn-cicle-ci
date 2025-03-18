@@ -1,0 +1,10 @@
+version: 2.1
+
+jobs:
+  build: # ジョブ名
+    docker:
+      - image: cimg/node:lts # 使用するDockerイメージ
+    steps:
+      - checkout # コードをチェックアウト
+      - run: echo "Hello, CircleCI!" # 実行コマンド
+
