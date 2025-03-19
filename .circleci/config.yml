@@ -1,10 +1,10 @@
-version: 2.1
+version: 2
 
 jobs:
   build: # ジョブ名
     docker:
       - image: cimg/node:lts # 使用するDockerイメージ
     steps:
-      - checkout # コードをチェックアウト
-      - run: echo "Hello, CircleCI!" # 実行コマンド
-
+      - checkout
+      - run: yarn install # yarn installを実行
+      - run: yarn test # テストを実行
