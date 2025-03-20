@@ -26,11 +26,46 @@ jobs:
       - run:
           name: Run tests
           command: yarn test
-
+  typecheck: # ジョブ名
+    executor: default # デフォルトの実行環境を使用
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run typecheck
+          command: yarn typecheck
+  lint: # ジョブ名
+    executor: default # デフォルトの実行環境を使用
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run lint
+          command: yarn lint
+  build: # ジョブ名
+    executor: default # デフォルトの実行環境を使用
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run build
+          command: yarn build
 workflows:
   build_test:
     jobs:
       - setup
       - test:
+          requires:
+            - setup
+      - typecheck:
+          requires:
+            - setup
+      - lint:
+          requires:
+            - setup
+      - build:
           requires:
             - setup
