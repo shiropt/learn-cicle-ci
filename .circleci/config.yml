@@ -1,10 +1,71 @@
-version: 2
-
-jobs:
-  build: # ジョブ名
+executors:
+  default:
     docker:
-      - image: cimg/node:lts # 使用するDockerイメージ
+      - image: cimg/node:lts # デフォルトのDockerイメージ
+    working_directory: ~/repo
+
+version: 2.1
+jobs:
+  setup:
+    executor: default
     steps:
       - checkout
-      - run: yarn install # yarn installを実行
-      - run: yarn test # テストを実行
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - node_modules
+  test: # ジョブ名
+    executor: default # デフォルトの実行環境を使用
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command: yarn test
+  typecheck: # ジョブ名
+    executor: default # デフォルトの実行環境を使用
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run typecheck
+          command: yarn typecheck
+  lint: # ジョブ名
+    executor: default # デフォルトの実行環境を使用
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run lint
+          command: yarn lint
+  build: # ジョブ名
+    executor: default # デフォルトの実行環境を使用
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run build
+          command: yarn build
+workflows:
+  build_test:
+    jobs:
+      - setup
+      - test:
+          requires:
+            - setup
+      - typecheck:
+          requires:
+            - setup
+      - lint:
+          requires:
+            - setup
+      - build:
+          requires:
+            - setup
