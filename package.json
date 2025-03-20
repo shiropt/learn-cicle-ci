@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
   },
   "author": "shiropt",
   "license": "ISC",
@@ -12,6 +15,10 @@
     "jest": "^29.7.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
     "vite": "^6.2.2"
   }
 }
